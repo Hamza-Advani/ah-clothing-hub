@@ -29,8 +29,10 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 - [x] User profile doc creation, profile edit, saved addresses
 - [x] Protected account routes
 - [x] Backend: firebase-admin init, auth middleware (verifyIdToken + role claim), make-admin script
-- [ ] **Switch `frontend/src/lib/catalog.ts` to read Firestore when configured** (products, categories, settings, pages, reviews) with ISR revalidation
-- [ ] Seed script `backend/scripts/seed.ts` to load demo categories/products/settings into Firestore
+- [x] Catalog reads live Firestore via REST (60s revalidate) with demo fallback while DB is empty
+- [x] Firebase web config added to frontend/.env.local; Cloudinary key+secret in backend/.env
+- [ ] OWNER: enable Email/Password sign-in; add service-account JSON to backend/; send Cloudinary cloud name; Resend key
+- [x] `npm run setup-firebase` (backend): deploys rules + indexes + seeds demo catalog — run once service account is added
 - [ ] Test live auth flows once keys are added
 - [ ] Lint + build + commit
 

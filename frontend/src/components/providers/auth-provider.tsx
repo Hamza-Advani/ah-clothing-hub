@@ -76,6 +76,8 @@ export function authErrorMessage(err: unknown): string {
     "auth/network-request-failed": "Network error. Please check your internet connection.",
     "auth/requires-recent-login": "For security, please log in again and retry.",
     "auth/user-disabled": "This account has been disabled. Please contact support.",
+    "auth/operation-not-allowed": "This sign-in method is not enabled yet. Please contact the store.",
+    "auth/unauthorized-domain": "This website domain is not authorised for Google sign-in yet.",
   };
   return map[code] ?? (err instanceof Error ? err.message : "Something went wrong. Please try again.");
 }
