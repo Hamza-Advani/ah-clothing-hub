@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+# builds
+.next/
+out/
+dist/
+build/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+# env — secrets never committed
+.env
+.env.*
+!.env.example
+# firebase service account files
+*serviceAccount*.json
+*-firebase-adminsdk-*.json
+# logs / os
+npm-debug.log*
+*.log
+.DS_Store
+Thumbs.db
+.claude/settings.local.json

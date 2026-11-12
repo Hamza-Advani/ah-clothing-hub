@@ -1,0 +1,63 @@
+rules_version = '2';
+// AH Clothing Hub — Firestore security rules
+// Sensitive writes (orders, prices, stock, status, settings, admins) go through the backend (Admin SDK bypasses rules).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function role() { return signedIn() && ('role' in request.auth.token) ? request.auth.token.role : 'customer'; }
+    function isAdmin() { return role() == 'admin'; }
+    function isStaff() { return role() == 'admin' || role() == 'staff'; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+
+    // ---------- Public catalog ----------
+    match /products/{id} {
+      allow read: if resource.data.active == true || isStaff();
+      allow write: if false; // backend only
+    }
+    match /categories/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /settings/{doc} {
+      allow read: if doc in ['store', 'pages'];
+      allow write: if false;
+    }
+    match /reviews/{id} {
+      allow read: if resource.data.status == 'approved' || isStaff() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow write: if false; // created via backend (verified purchase check)
+    }
+
+    // ---------- Admin-only (cost price, profit, inbox, etc.) ----------
+    match /productsPrivate/{id} { allow read: if isStaff(); allow write: if false; }
+    match /ordersPrivate/{id}   { allow read: if isStaff(); allow write: if false; }
+    match /admins/{uid}         { allow read: if isStaff(); allow write: if false; }
+    match /messages/{id}        { allow read: if isStaff(); allow write: if false; }
+    match /coupons/{code}       { allow read: if isStaff(); allow write: if false; }
+    match /counters/{id}        { allow read, write: if false; }
+    match /subscribers/{id}     { allow read: if isStaff(); allow write: if false; }
+    match /stats/{id}           { allow read: if isStaff(); allow write: if false; }
+
+    // ---------- Orders: customers read only their own ----------
+    match /orders/{id} {
+      allow read: if isStaff() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow write: if false; // created & updated by backend only
+    }
+
+    // ---------- Users ----------
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isStaff();
+      // first-time profile creation with safe defaults only
+      allow create: if isOwner(uid)
+        && request.resource.data.role == 'customer'
+        && request.resource.data.blocked == false
+        && request.resource.data.ordersCount == 0
+        && request.resource.data.totalSpent == 0;
+      // customers can edit only their own personal fields
+      allow update: if isOwner(uid)
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['name', 'phone', 'photoURL', 'addresses', 'wishlist', 'updatedAt']);
+      allow delete: if false;
+    }
+  }
+}
