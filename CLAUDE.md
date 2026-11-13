@@ -150,6 +150,7 @@ Admin role = Firebase custom claim `role: 'admin'|'staff'` (+ `admins/{uid}` doc
 - Cost price & profit never reach customer-facing code paths.
 
 ## 8. Commands
+- Both servers together (project root): `npm run dev`
 - Frontend: `cd frontend && npm run dev` (http://localhost:3000)
 - Backend: `cd backend && npm run dev` (http://localhost:4000)
 - Make admin: `cd backend && npm run make-admin -- you@email.com`

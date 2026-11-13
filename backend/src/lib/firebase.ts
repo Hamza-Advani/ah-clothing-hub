@@ -7,7 +7,7 @@ import { HttpError } from "./http.js";
 let app: App | undefined;
 
 function getApp(): App {
-  if (!configured.firebase) throw new HttpError(503, "Firebase Admin is not configured yet. Add FIREBASE_* variables to backend/.env");
+  if (!configured.firebase) throw new HttpError(503, "Backend is running but can't save yet: the Firebase service-account key is missing. Download it (Firebase Console → Project settings → Service accounts → Generate new private key), put the .json file in the backend/ folder and restart the backend.");
   if (!app) {
     app = getApps()[0] ??
       initializeApp({

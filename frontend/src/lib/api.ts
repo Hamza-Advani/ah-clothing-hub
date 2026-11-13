@@ -28,14 +28,20 @@ async function request<T>(method: string, path: string, body?: unknown, opts: Op
       await new Promise((r) => setTimeout(r, 600));
       return (opts.demoResult ?? {}) as T;
     }
-    throw new ApiError("The store backend isn't connected yet (demo mode).", 503);
+    throw new ApiError("Backend URL is missing — add NEXT_PUBLIC_API_URL to frontend/.env.local and restart the frontend.", 503);
   }
-  const res = await fetch(`${BASE}${path}`, {
-    method,
-    headers: { "Content-Type": "application/json", ...(await authHeader()) },
-    body: body === undefined ? undefined : JSON.stringify(body),
-    signal: opts.signal,
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      method,
+      headers: { "Content-Type": "application/json", ...(await authHeader()) },
+      body: body === undefined ? undefined : JSON.stringify(body),
+      signal: opts.signal,
+    });
+  } catch (e) {
+    if ((e as Error).name === "AbortError") throw e;
+    throw new ApiError(`Can't reach the backend at ${BASE}. Start it with: cd backend → npm run dev (or npm run dev in the project root).`, 0);
+  }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new ApiError(data?.error ?? "Request failed. Please try again.", res.status, data?.details);
   return data as T;

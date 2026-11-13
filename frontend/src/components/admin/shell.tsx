@@ -10,6 +10,7 @@ import {
 import { Sheet, SheetContent } from "@/components/ui/radix";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useAdminData } from "./admin-data";
+import { BackendStatus } from "./backend-status";
 import { timeAgo } from "./ui";
 import { adminDemoMode, useLiveDoc } from "@/lib/admin/live";
 import { ROUTE_PERMISSION } from "@/lib/admin/permissions";
@@ -308,7 +309,10 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <div className="mx-1 h-6 w-px bg-border" />
           <UserMenu />
         </header>
-        <main className="mx-auto w-full max-w-[1500px] px-4 py-6 md:px-6 md:py-8">{children}</main>
+        <main className="mx-auto w-full max-w-[1500px] px-4 py-6 md:px-6 md:py-8">
+          <BackendStatus />
+          {children}
+        </main>
       </div>
     </div>
   );
