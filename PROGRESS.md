@@ -81,7 +81,13 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 - [ ] Performance pass
 - [x] GitHub repo + push → https://github.com/Hassan123advani/ah-clothing-hub (private)
 - [x] Vercel projects (team hassan-advani), git-connected: ahclothinghub (root frontend) → https://ahclothinghub.vercel.app ; ahclothinghub-api (root backend) → https://ahclothinghub-api.vercel.app ; env vars set
-- [ ] OWNER: add FIREBASE_CLIENT_EMAIL + FIREBASE_PRIVATE_KEY (+ CLOUDINARY_CLOUD_NAME, RESEND_API_KEY) to Vercel project ahclothinghub-api; add ahclothinghub.vercel.app to Firebase Auth authorized domains
+- [x] Backend live on Vercel (esbuild bundle via backend/api/index.js); health: cloudinary ✓, CORS ✓
+- [x] Cloudinary connected (cloud qoi1gfay): signed image-only uploads tested, replaced/removed images deleted
+- [x] Admin notifications → hassanadvani267@gmail.com (new order, contact form); ADMIN_EMAILS allow-list = hassanadvani267@gmail.com
+- [ ] OWNER: Firebase service-account JSON → backend/ (then Claude adds FIREBASE_CLIENT_EMAIL/PRIVATE_KEY to Vercel, deploys rules/indexes, creates admin hassanadvani267@gmail.com)
+- [ ] OWNER: enable Email/Password sign-in + add ahclothinghub.vercel.app to Firebase Auth authorized domains
+- [ ] OWNER: RESEND_API_KEY (backend/.env); verify a domain in Resend to email customers
+- [ ] After key: run setup-firebase, make-admin, full E2E test (COD order, emails, admin CRUD)
 - [x] Demo data removed (catalogue only from Firestore); brand SEO (metadata, JSON-LD WebSite+ClothingStore, manifest, sitemap)
 - [ ] OWNER: Google Search Console — verify site (NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION) + submit sitemap
 
@@ -90,7 +96,7 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 - [x] /admin/account: profile edit + change password (re-auth) + reset link for Google accounts
 - [x] Staff permissions hide sidebar sections; admin-only: settings, pages, team, deletes
 - [x] make-admin script: `--password` / `--name` (creates account if missing)
-- [ ] OWNER: make hassanadvani08@gmail.com admin → needs service-account JSON in backend/ + Email/Password provider enabled, then `npm run make-admin -- hassanadvani08@gmail.com admin --password "<password>"`
+- [ ] (superseded) make hassanadvani08@gmail.com admin — admin is now hassanadvani267@gmail.com → needs service-account JSON in backend/ + Email/Password provider enabled, then `npm run make-admin -- hassanadvani08@gmail.com admin --password "<password>"`
 
 ## Notes / blockers
 - **Waiting on owner for keys** (see summary in chat / `.env.example` files). UI runs in demo mode until then.
