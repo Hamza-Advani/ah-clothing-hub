@@ -79,8 +79,11 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 - [x] firestore.rules + firestore.indexes.json + firebase.json (deploy with `firebase deploy --only firestore`)
 - [ ] Full flow testing with live keys
 - [ ] Performance pass
-- [ ] GitHub repo + push (gh CLI not found in Git Bash PATH — check PowerShell)
-- [ ] Vercel deploy (frontend + backend projects) + env vars
+- [x] GitHub repo + push → https://github.com/Hassan123advani/ah-clothing-hub (private)
+- [x] Vercel projects (team hassan-advani), git-connected: ahclothinghub (root frontend) → https://ahclothinghub.vercel.app ; ahclothinghub-api (root backend) → https://ahclothinghub-api.vercel.app ; env vars set
+- [ ] OWNER: add FIREBASE_CLIENT_EMAIL + FIREBASE_PRIVATE_KEY (+ CLOUDINARY_CLOUD_NAME, RESEND_API_KEY) to Vercel project ahclothinghub-api; add ahclothinghub.vercel.app to Firebase Auth authorized domains
+- [x] Demo data removed (catalogue only from Firestore); brand SEO (metadata, JSON-LD WebSite+ClothingStore, manifest, sitemap)
+- [ ] OWNER: Google Search Console — verify site (NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION) + submit sitemap
 
 ## Admin panel extras (done)
 - [x] /admin/login (email+password, Google, forgot password), access guard with claim refresh
