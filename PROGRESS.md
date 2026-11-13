@@ -86,6 +86,7 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 - [x] Admin notifications → hassanadvani267@gmail.com (new order, contact form); ADMIN_EMAILS allow-list = hassanadvani267@gmail.com
 - [x] Firebase: service-account key (backend/, gitignored) + Vercel env; rules deployed (old deny-all rules backed up in backups/); indexes deployed; order counter created
 - [x] Admin hassanadvani267@gmail.com created (custom claim role=admin) — temporary password, change it
+- [x] 2nd admin ahclothinghub@gmail.com created on owner request; ADMIN_EMAILS (local + Vercel) = both emails; backend redeployed; both verified against live admin API
 - [x] Email/Password sign-in enabled; ahclothinghub.vercel.app authorized
 - [x] Resend key set (local + Vercel); test email sent to admin
 - [ ] OWNER: verify a domain in Resend so customer emails deliver (onboarding@resend.dev only sends to the Resend account owner)
