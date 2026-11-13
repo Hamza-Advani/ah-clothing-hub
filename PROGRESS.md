@@ -89,7 +89,9 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 - [x] Email/Password sign-in enabled; ahclothinghub.vercel.app authorized
 - [x] Resend key set (local + Vercel); test email sent to admin
 - [ ] OWNER: verify a domain in Resend so customer emails deliver (onboarding@resend.dev only sends to the Resend account owner)
-- [ ] After key: run setup-firebase, make-admin, full E2E test (COD order, emails, admin CRUD)
+- [x] Live E2E (visible Edge, 2026-11-13): admin login, category + product with Cloudinary photo, storefront product page, cart, COD checkout (Karachi) → AH-260001/AH-260002, admin status → confirmed, contact form → admin inbox, customer signup + My Orders, mobile 390px. Resend: new-order, order-confirmation, status and contact emails all delivered.
+- [ ] OWNER: decide whether to delete test data (Test Category, "TEST Product - delete me", orders AH-260001/AH-260002, test messages, test customer hassanadvani267+customer…@gmail.com)
+- [ ] OWNER: change temporary admin password + rotate Cloudinary secret / Resend key (shared in chat)
 - [x] Demo data removed (catalogue only from Firestore); brand SEO (metadata, JSON-LD WebSite+ClothingStore, manifest, sitemap)
 - [ ] OWNER: Google Search Console — verify site (NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION) + submit sitemap
 
