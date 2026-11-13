@@ -84,9 +84,11 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 - [x] Backend live on Vercel (esbuild bundle via backend/api/index.js); health: cloudinary ✓, CORS ✓
 - [x] Cloudinary connected (cloud qoi1gfay): signed image-only uploads tested, replaced/removed images deleted
 - [x] Admin notifications → hassanadvani267@gmail.com (new order, contact form); ADMIN_EMAILS allow-list = hassanadvani267@gmail.com
-- [ ] OWNER: Firebase service-account JSON → backend/ (then Claude adds FIREBASE_CLIENT_EMAIL/PRIVATE_KEY to Vercel, deploys rules/indexes, creates admin hassanadvani267@gmail.com)
-- [ ] OWNER: enable Email/Password sign-in + add ahclothinghub.vercel.app to Firebase Auth authorized domains
-- [ ] OWNER: RESEND_API_KEY (backend/.env); verify a domain in Resend to email customers
+- [x] Firebase: service-account key (backend/, gitignored) + Vercel env; rules deployed (old deny-all rules backed up in backups/); indexes deployed; order counter created
+- [x] Admin hassanadvani267@gmail.com created (custom claim role=admin) — temporary password, change it
+- [x] Email/Password sign-in enabled; ahclothinghub.vercel.app authorized
+- [x] Resend key set (local + Vercel); test email sent to admin
+- [ ] OWNER: verify a domain in Resend so customer emails deliver (onboarding@resend.dev only sends to the Resend account owner)
 - [ ] After key: run setup-firebase, make-admin, full E2E test (COD order, emails, admin CRUD)
 - [x] Demo data removed (catalogue only from Firestore); brand SEO (metadata, JSON-LD WebSite+ClothingStore, manifest, sitemap)
 - [ ] OWNER: Google Search Console — verify site (NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION) + submit sitemap
