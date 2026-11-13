@@ -6,7 +6,11 @@ import { render } from "@react-email/components";
 import { Resend } from "resend";
 import { createElement } from "react";
 import { configured, env } from "../lib/env.js";
-import { getSettings } from "../services/orders.js";
+import { getSettings as loadSettings } from "../services/orders.js";
+import { DEFAULT_SETTINGS } from "../lib/types.js";
+
+/** Settings for email branding — falls back to defaults so emails never fail because of a settings read. */
+const getSettings = () => loadSettings().catch(() => DEFAULT_SETTINGS);
 import { AdminNewOrderEmail, CustomEmail, OrderPlacedEmail, StatusEmail, type EmailOrder } from "../emails/templates.js";
 
 let resend: Resend | null = null;
