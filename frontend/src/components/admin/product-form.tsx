@@ -133,7 +133,7 @@ export function ProductForm({ product }: { product?: Product }) {
             <AField label="Product name" htmlFor="p-name" error={err("name")}>
               <AInput id="p-name" value={f.name} invalid={!!err("name")} placeholder="e.g. Embroidered Lawn 3-Piece" onChange={(e) => { const name = e.target.value; setF((p) => ({ ...p, name, slug: slugTouched ? p.slug : slugify(name) })); }} />
             </AField>
-            <AField label="URL slug" htmlFor="p-slug" error={err("slug")} hint={`ahclothinghub.pk/product/${f.slug || "…"}`}>
+            <AField label="URL slug" htmlFor="p-slug" error={err("slug")} hint={`/product/${f.slug || "…"}`}>
               <AInput id="p-slug" value={f.slug} invalid={!!err("slug")} onChange={(e) => { setSlugTouched(true); set("slug", slugify(e.target.value)); }} />
             </AField>
             <AField label="Description">

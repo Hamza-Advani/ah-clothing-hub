@@ -46,15 +46,15 @@ export type StoreSettings = {
 
 export const DEFAULT_SETTINGS: StoreSettings = {
   storeName: "AH Clothing Hub",
-  email: "hello@ahclothinghub.pk",
-  phone: "+92 300 1234567",
-  whatsapp: "+923001234567",
+  email: "",
+  phone: "",
+  whatsapp: "",
   deliveryCharge: 250,
   freeDeliveryThreshold: 5000,
   citiesServed: [],
   payments: {
     cod: { enabled: true },
-    jazzcash: { enabled: true, accountTitle: "", accountNumber: "" },
-    easypaisa: { enabled: true, accountTitle: "", accountNumber: "" },
+    jazzcash: { enabled: false, accountTitle: "", accountNumber: "" },
+    easypaisa: { enabled: false, accountTitle: "", accountNumber: "" },
   },
 };

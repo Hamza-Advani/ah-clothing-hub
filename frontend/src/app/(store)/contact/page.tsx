@@ -13,8 +13,8 @@ export default async function ContactPage() {
     { icon: MessageCircle, label: "WhatsApp", value: s.whatsapp, href: whatsappLink(s.whatsapp, "Assalam o Alaikum!"), note: "Fastest reply" },
     { icon: Phone, label: "Call us", value: s.phone, href: `tel:${s.phone.replace(/\s/g, "")}`, note: "10am – 10pm, Mon–Sat" },
     { icon: Mail, label: "Email", value: s.email, href: `mailto:${s.email}`, note: "Reply within 24 hours" },
-    { icon: MapPin, label: "Studio", value: s.address, href: `https://maps.google.com/?q=${encodeURIComponent(s.address)}`, note: "Visit by appointment" },
-  ];
+    { icon: MapPin, label: "Address", value: s.address, href: `https://maps.google.com/?q=${encodeURIComponent(s.address)}`, note: "" },
+  ].filter((c) => c.value);
   return (
     <>
       <PageHeader eyebrow="We're here to help" title="Get in touch" description="Questions about sizing, an order, or styling advice? We'd love to hear from you." />

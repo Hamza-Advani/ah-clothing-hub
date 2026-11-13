@@ -167,7 +167,7 @@ export function ProductInfo({ product, freeDeliveryThreshold, deliveryCharge }: 
         </AccordionItem>
         <AccordionItem value="ship" title="Delivery & returns">
           <p>Delivered in 2–4 working days to major cities and 4–6 days elsewhere. Cash on Delivery available nationwide.</p>
-          <p className="mt-2">Easy 7-day exchange & returns on unworn items with tags. <Link href="/returns" className="text-foreground underline">Read policy</Link></p>
+          <p className="mt-2">Easy exchanges on unworn items with tags. <Link href="/returns" className="text-foreground underline">Read policy</Link></p>
         </AccordionItem>
       </Accordion>
       <button onClick={share} className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground hover:text-foreground">

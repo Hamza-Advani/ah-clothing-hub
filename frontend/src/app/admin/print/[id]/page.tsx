@@ -5,7 +5,7 @@ import { Printer } from "lucide-react";
 import { AdminGuard } from "@/components/admin/guard";
 import { useLiveDoc } from "@/lib/admin/live";
 import { demo } from "@/lib/admin/demo";
-import { DUMMY_SETTINGS } from "@/lib/dummy-data";
+import { DEFAULT_SETTINGS } from "@/lib/defaults";
 import { PAYMENT_LABELS } from "@/lib/constants";
 import { formatPKR } from "@/lib/utils";
 import type { Order, StoreSettings } from "@/lib/types";
@@ -13,7 +13,7 @@ import type { Order, StoreSettings } from "@/lib/types";
 function PrintView({ id }: { id: string }) {
   const type = useSearchParams().get("type") === "slip" ? "slip" : "invoice";
   const order = useLiveDoc<Order>(`orders/${id}`, useCallback(() => demo.orders().find((o) => o.id === id) ?? null, [id]));
-  const s = useLiveDoc<StoreSettings>("settings/store", demo.settings) ?? DUMMY_SETTINGS;
+  const s = useLiveDoc<StoreSettings>("settings/store", demo.settings) ?? DEFAULT_SETTINGS;
 
   useEffect(() => {
     if (!order) return;
@@ -115,7 +115,7 @@ function PrintView({ id }: { id: string }) {
         {order.shipping.notes && <p className="mt-6 border border-dashed border-[#e6ded2] p-3 text-xs"><b>Customer note:</b> {order.shipping.notes}</p>}
 
         <footer className="mt-12 border-t border-[#e6ded2] pt-4 text-center text-xs text-[#6b6560]">
-          Thank you for shopping with {s.storeName}! Exchanges within 7 days — WhatsApp us at {s.whatsapp}.
+          Thank you for shopping with {s.storeName}! {s.whatsapp ? `Questions? WhatsApp us at ${s.whatsapp}.` : ""}
         </footer>
       </article>
     </div>

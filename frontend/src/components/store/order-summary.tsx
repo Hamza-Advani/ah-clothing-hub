@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Tag, X } from "lucide-react";
 import { toast } from "sonner";
 import { api, isApiConfigured } from "@/lib/api";
-import { DEMO_COUPONS, type CouponPreview } from "@/lib/pricing";
+import type { CouponPreview } from "@/lib/pricing";
 import { formatPKR } from "@/lib/utils";
 
 export function CouponInput({ subtotal, coupon, onApply }: { subtotal: number; coupon: CouponPreview | null; onApply: (c: CouponPreview | null) => void }) {
@@ -19,8 +19,7 @@ export function CouponInput({ subtotal, coupon, onApply }: { subtotal: number; c
       if (isApiConfigured) {
         result = (await api.post<{ coupon: CouponPreview }>("/api/coupons/validate", { code: c, subtotal })).coupon;
       } else {
-        result = DEMO_COUPONS[c] ?? null;
-        if (!result) throw new Error("This coupon code is invalid or has expired.");
+        throw new Error("Coupons are not available right now.");
       }
       if (subtotal < result.minOrder) throw new Error(`Add ${formatPKR(result.minOrder - subtotal)} more to use this coupon.`);
       onApply(result);

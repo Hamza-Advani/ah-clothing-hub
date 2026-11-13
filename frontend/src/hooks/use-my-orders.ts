@@ -2,7 +2,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { collection, doc, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { getFirebase, isFirebaseConfigured } from "@/lib/firebase/client";
-import { generateDemoOrders } from "@/lib/demo-orders";
 import { useAuth } from "@/components/providers/auth-provider";
 import type { Order } from "@/lib/types";
 
@@ -15,13 +14,12 @@ export function normalizeOrder(id: string, d: any): Order {
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-const demoMine = () => generateDemoOrders(40, 30).filter((o) => o.userId === "demo-me").slice(0, 4);
 
 /** Live list of the signed-in customer's orders. */
 export function useMyOrders() {
   const { user } = useAuth();
   const [orders, setOrders] = useState<Order[] | null>(null);
-  const demo = useMemo(() => (user && !isFirebaseConfigured ? demoMine() : null), [user]);
+  const demo = useMemo(() => (user && !isFirebaseConfigured ? ([] as Order[]) : null), [user]);
   useEffect(() => {
     if (!user || !isFirebaseConfigured) return;
     const { db } = getFirebase()!;
@@ -35,7 +33,7 @@ export function useMyOrders() {
 export function useMyOrder(id: string) {
   const { user } = useAuth();
   const [order, setOrder] = useState<Order | null | undefined>(undefined);
-  const demo = useMemo(() => (user && !isFirebaseConfigured ? demoMine().find((o) => o.id === id) ?? null : undefined), [user, id]);
+  const demo = useMemo(() => (user && !isFirebaseConfigured ? null : undefined), [user]);
   useEffect(() => {
     if (!user || !isFirebaseConfigured) return;
     const { db } = getFirebase()!;

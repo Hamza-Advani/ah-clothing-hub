@@ -13,7 +13,7 @@ export default async function ShopPage() {
   const [products, categories] = await Promise.all([getAllProducts(), getCategories()]);
   return (
     <>
-      <PageHeader eyebrow="The collection" title="Shop all" description="Timeless pieces with a modern edge — designed in Lahore, delivered across Pakistan." />
+      <PageHeader eyebrow="The collection" title="Shop all" description="Timeless pieces with a modern edge — delivered across Pakistan." />
       <Suspense fallback={<ShopSkeleton />}>
         <ShopView products={products} categories={categories} />
       </Suspense>

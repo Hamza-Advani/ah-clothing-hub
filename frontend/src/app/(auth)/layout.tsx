@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/store/logo";
-import { DUMMY_SETTINGS } from "@/lib/dummy-data";
+import { BRAND_IMAGES } from "@/lib/defaults";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
-  const img = DUMMY_SETTINGS.heroBanners[1]?.image ?? DUMMY_SETTINGS.heroBanners[0].image;
+  const img = BRAND_IMAGES[1];
   return (
     <div className="grid min-h-dvh lg:grid-cols-[1fr_1.05fr]">
       <div className="flex flex-col px-5 py-6 md:px-12">

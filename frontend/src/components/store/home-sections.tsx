@@ -75,21 +75,8 @@ export function EditorialSplit({ image, image2 }: { image: string; image2: strin
             <em className="font-normal text-accent">modern</em> silhouettes
           </h2>
           <p className="mt-6 max-w-md text-muted-foreground">
-            Every collection begins in our Lahore atelier, where fabrics are chosen by touch and embroideries are drawn by hand. We pair those time-honoured techniques
-            with clean, modern cuts — so you can wear tradition, your way.
+            Classic eastern elegance meets clean, modern cuts — pieces for every day, every celebration and everything in between, delivered across Pakistan.
           </p>
-          <dl className="mt-10 grid max-w-md grid-cols-3 gap-6 border-t border-border pt-8">
-            {[
-              ["50k+", "Happy customers"],
-              ["120+", "Cities delivered"],
-              ["4.8★", "Average rating"],
-            ].map(([n, l]) => (
-              <div key={l}>
-                <dt className="font-display text-3xl md:text-4xl">{n}</dt>
-                <dd className="mt-1 text-xs text-muted-foreground">{l}</dd>
-              </div>
-            ))}
-          </dl>
           <Link href="/about" className="group mt-10 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]">
             <span className="link-underline">Our story</span> <ArrowRight className="size-4 transition group-hover:translate-x-1" />
           </Link>
@@ -130,7 +117,7 @@ export function TrustBadges({ freeDeliveryThreshold, compact }: { freeDeliveryTh
   const items = [
     { icon: Banknote, title: "Cash on Delivery", text: "Pay when it arrives, nationwide" },
     { icon: Truck, title: "Free delivery", text: `On orders above ${formatPKR(freeDeliveryThreshold)}` },
-    { icon: RefreshCcw, title: "7-day easy returns", text: "Hassle-free size exchanges" },
+    { icon: RefreshCcw, title: "Easy exchanges", text: "Hassle-free size exchanges" },
     { icon: ShieldCheck, title: "Secure payments", text: "JazzCash, EasyPaisa & COD" },
   ];
   if (compact) {

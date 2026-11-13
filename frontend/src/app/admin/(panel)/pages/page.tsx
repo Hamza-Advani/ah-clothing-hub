@@ -6,7 +6,7 @@ import { RichText } from "@/components/admin/rich-text";
 import { useLiveDoc } from "@/lib/admin/live";
 import { demo } from "@/lib/admin/demo";
 import { adminApi, run } from "@/lib/admin/actions";
-import { DUMMY_PAGES } from "@/lib/dummy-data";
+import { DEFAULT_PAGES } from "@/lib/defaults";
 import type { PagesContent } from "@/lib/types";
 
 type Key = "about" | "returns" | "privacy" | "terms" | "faq";
@@ -21,7 +21,7 @@ const META: Record<Key, { label: string; href: string }> = {
 export default function PagesEditor() {
   const doc = useLiveDoc<PagesContent>("settings/pages", demo.pages);
   if (doc === undefined) return <FullLoader label="Loading pages…" />;
-  return <Editor initial={{ ...DUMMY_PAGES, ...(doc ?? {}) }} />;
+  return <Editor initial={{ ...DEFAULT_PAGES, ...(doc ?? {}) }} />;
 }
 
 function Editor({ initial }: { initial: PagesContent }) {

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useLiveCollection, useLiveDoc } from "@/lib/admin/live";
 import { demo, type CostDoc, type PrivateDoc } from "@/lib/admin/demo";
-import { DUMMY_SETTINGS } from "@/lib/dummy-data";
+import { DEFAULT_SETTINGS } from "@/lib/defaults";
 import { formatPKR } from "@/lib/utils";
 import type { Category, ContactMessage, Order, Product, Review, StoreSettings } from "@/lib/types";
 
@@ -86,7 +86,7 @@ export function AdminDataProvider({ children }: { children: React.ReactNode }) {
       categories: c.data,
       messages: m.data,
       reviews: r.data,
-      settings: { ...DUMMY_SETTINGS, ...(s ?? {}), payments: { ...DUMMY_SETTINGS.payments, ...(s?.payments ?? {}) }, templates: { whatsapp: { ...DUMMY_SETTINGS.templates.whatsapp, ...(s?.templates?.whatsapp ?? {}) }, email: { ...(s?.templates?.email ?? {}) } } },
+      settings: { ...DEFAULT_SETTINGS, ...(s ?? {}), payments: { ...DEFAULT_SETTINGS.payments, ...(s?.payments ?? {}) }, templates: { whatsapp: { ...DEFAULT_SETTINGS.templates.whatsapp, ...(s?.templates?.whatsapp ?? {}) }, email: { ...(s?.templates?.email ?? {}) } } },
       settingsReady: s !== undefined,
     }),
     [o.data, o.error, p.data, pr.data, pp.data, pp.error, c.data, m.data, r.data, s],

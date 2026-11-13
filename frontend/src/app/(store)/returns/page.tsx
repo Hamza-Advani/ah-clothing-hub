@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageHeader, Prose } from "@/components/ui/misc";
 import { getPages } from "@/lib/catalog";
 
-export const metadata: Metadata = { title: "Returns & Exchange", description: "Easy 7-day exchange and returns policy at AH Clothing Hub." };
+export const metadata: Metadata = { title: "Returns & Exchange", description: "Exchange and returns policy at AH Clothing Hub." };
 
 export default async function Page() {
   const pages = await getPages();

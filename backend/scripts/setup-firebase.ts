@@ -1,7 +1,7 @@
 /**
  * One-time Firebase setup:
- *   npm run setup-firebase            → deploy rules + indexes + seed demo catalog (skips seeding if products exist)
- *   npm run setup-firebase -- --force → re-seed even if products exist
+ *   npm run setup-firebase → deploy security rules + indexes and create the order-number counter.
+ * No demo products are added — add your real catalogue from the admin panel.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -9,11 +9,9 @@ import { fileURLToPath } from "node:url";
 import { cert } from "firebase-admin/app";
 import { db, FieldValue } from "../src/lib/firebase.js";
 import { env } from "../src/lib/env.js";
-import { DUMMY_CATEGORIES, DUMMY_COST_RATIO, DUMMY_PAGES, DUMMY_PRODUCTS, DUMMY_SETTINGS } from "../../frontend/src/lib/dummy-data.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const project = env.FIREBASE_PROJECT_ID!;
-const force = process.argv.includes("--force");
 
 async function token() {
   const cred = cert({ projectId: project, clientEmail: env.FIREBASE_CLIENT_EMAIL, privateKey: env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n") });
@@ -51,27 +49,9 @@ async function deployIndexes() {
 }
 
 async function seed() {
-  const firestore = db();
-  const existing = await firestore.collection("products").limit(1).get();
-  if (!existing.empty && !force) {
-    console.log("ℹ️ Products already exist — skipping seed (use --force to re-seed).");
-    return;
-  }
-  const batch = firestore.batch();
-  for (const c of DUMMY_CATEGORIES) {
-    const { id, ...data } = c;
-    batch.set(firestore.doc(`categories/${id}`), { ...data, createdAt: FieldValue.serverTimestamp() });
-  }
-  for (const p of DUMMY_PRODUCTS) {
-    const { id, createdAt, ...data } = p;
-    batch.set(firestore.doc(`products/${id}`), { ...data, createdAt: new Date(createdAt), updatedAt: FieldValue.serverTimestamp() });
-    batch.set(firestore.doc(`productsPrivate/${id}`), { costPrice: Math.round(p.price * DUMMY_COST_RATIO) });
-  }
-  batch.set(firestore.doc("settings/store"), { ...DUMMY_SETTINGS, updatedAt: FieldValue.serverTimestamp() });
-  batch.set(firestore.doc("settings/pages"), { ...DUMMY_PAGES, updatedAt: FieldValue.serverTimestamp() });
-  batch.set(firestore.doc("counters/orders"), { next: 260001 }, { merge: true });
-  await batch.commit();
-  console.log(`✅ Seeded ${DUMMY_CATEGORIES.length} categories, ${DUMMY_PRODUCTS.length} products (with cost prices), store settings & pages`);
+  const ref = db().doc("counters/orders");
+  if (!(await ref.get()).exists) await ref.set({ next: 260001, createdAt: FieldValue.serverTimestamp() });
+  console.log("✅ Order counter ready (no demo data added)");
 }
 
 await deployRules();

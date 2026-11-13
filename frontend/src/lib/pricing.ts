@@ -17,8 +17,3 @@ export function previewTotals(subtotal: number, opts: { deliveryCharge: number; 
   return { subtotal, discount, delivery, total: afterDiscount + delivery };
 }
 
-/** Demo coupons used only while the backend is not connected. */
-export const DEMO_COUPONS: Record<string, CouponPreview> = {
-  WELCOME10: { code: "WELCOME10", type: "percent", value: 10, minOrder: 0, maxDiscount: 2000 },
-  AH500: { code: "AH500", type: "fixed", value: 500, minOrder: 4000, maxDiscount: null },
-};

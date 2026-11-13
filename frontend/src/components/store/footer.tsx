@@ -33,7 +33,7 @@ export function Footer({ settings, categories }: { settings: StoreSettings; cate
       <div className="container-x grid gap-12 py-16 md:py-20 lg:grid-cols-[1.3fr_2fr]">
         <div>
           <Logo inverted logoUrl={settings.logo} />
-          <p className="mt-5 max-w-sm text-sm leading-6 text-[#a8a29b]">{settings.tagline}. Thoughtfully designed in Lahore, delivered with care to every city in Pakistan.</p>
+          <p className="mt-5 max-w-sm text-sm leading-6 text-[#a8a29b]">{settings.tagline}. Delivered with care to every city in Pakistan.</p>
           <div className="mt-8 max-w-sm">
             <p className="eyebrow mb-3 text-accent">Join the list</p>
             <NewsletterForm dark />
@@ -61,9 +61,9 @@ export function Footer({ settings, categories }: { settings: StoreSettings; cate
           <div className="col-span-2 md:col-span-1">
             <p className="eyebrow mb-5 text-[#8f8982]">Visit / Call</p>
             <ul className="space-y-3 text-sm text-[#e9e4dc]/90">
-              <li className="flex gap-2.5"><MapPin className="mt-0.5 size-4 shrink-0 text-accent" />{settings.address}</li>
-              <li><a href={`tel:${settings.phone.replace(/\s/g, "")}`} className="flex gap-2.5 hover:text-white"><Phone className="mt-0.5 size-4 shrink-0 text-accent" />{settings.phone}</a></li>
-              <li><a href={`mailto:${settings.email}`} className="flex gap-2.5 break-all hover:text-white"><Mail className="mt-0.5 size-4 shrink-0 text-accent" />{settings.email}</a></li>
+              {settings.address && <li className="flex gap-2.5"><MapPin className="mt-0.5 size-4 shrink-0 text-accent" />{settings.address}</li>}
+              {settings.phone && <li><a href={`tel:${settings.phone.replace(/\s/g, "")}`} className="flex gap-2.5 hover:text-white"><Phone className="mt-0.5 size-4 shrink-0 text-accent" />{settings.phone}</a></li>}
+              {settings.email && <li><a href={`mailto:${settings.email}`} className="flex gap-2.5 break-all hover:text-white"><Mail className="mt-0.5 size-4 shrink-0 text-accent" />{settings.email}</a></li>}
             </ul>
           </div>
         </div>
