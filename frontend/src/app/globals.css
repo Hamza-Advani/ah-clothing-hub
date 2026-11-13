@@ -20,6 +20,12 @@
   --ring: #b08d57;
   --shadow-soft: 0 1px 2px rgb(20 20 20 / 0.04), 0 8px 24px -12px rgb(20 20 20 / 0.12);
   --shadow-lift: 0 18px 40px -18px rgb(20 20 20 / 0.28);
+  --chart-1: #1f8a70;
+  --chart-2: #b8862f;
+  --chart-3: #4f6fb0;
+  --chart-4: #c0502f;
+  --chart-5: #8a5fa8;
+  --chart-grid: #ece6dc;
 }
 
 .dark {
@@ -40,6 +46,13 @@
   --ring: #c9a46a;
   --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.5);
   --shadow-lift: 0 18px 40px -18px rgb(0 0 0 / 0.7);
+  --chart-1: #2f9a7f;
+  --chart-2: #b8862f;
+  --chart-3: #6c8bd6;
+  --chart-4: #d9623f;
+  --chart-5: #a47bc8;
+  --chart-grid: #242828;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -58,6 +71,11 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
   --font-sans: var(--font-manrope);
   --font-display: var(--font-cormorant);
   --shadow-soft: var(--shadow-soft);
@@ -125,6 +143,9 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+.admin-skin h1, .admin-skin h2, .admin-skin h3 { font-family: var(--font-manrope), system-ui, sans-serif; letter-spacing: -0.02em; }
+.admin-skin .recharts-surface:focus { outline: none; }
 
 @media print {
   .no-print { display: none !important; }

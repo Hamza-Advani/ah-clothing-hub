@@ -37,14 +37,14 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 - [ ] Lint + build + commit
 
 ## Phase 3 — Admin panel layout, products, categories
-- [ ] Admin guard (custom claim), layout (collapsible sidebar, topbar, light/dark mode)
+- [x] Admin guard (custom claim), layout (collapsible sidebar, topbar, light/dark mode)
 - [x] Backend: signed Cloudinary upload endpoint (`POST /api/uploads/sign`)
 - [x] Client upload helper with compression + progress (`frontend/src/lib/upload.ts`)
-- [ ] Image uploader UI (drag-drop, camera, preview, progress, reorder, cover, delete, max 8)
+- [x] Image uploader UI (drag-drop, camera, preview, progress, reorder, cover, delete, max 8)
 - [x] Backend: products CRUD + bulk actions, categories CRUD (cost price → productsPrivate)
-- [ ] Products table UI (search, filter, sort, bulk) + product form (all fields, variant stock grid)
-- [ ] Categories UI
-- [ ] Lint + build + commit
+- [x] Products table UI (search, filter, sort, bulk) + product form (all fields, variant stock grid)
+- [x] Categories UI
+- [x] Lint + build + commit
 
 ## Phase 4 — Cart, checkout, orders, payments
 - [x] Backend pricing service, coupon validation, order create transaction (stock decrement, order counter, ordersPrivate revenue/cost/profit)
@@ -56,24 +56,24 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 ## Phase 5 — Order management, emails, WhatsApp, inbox
 - [x] Backend: status change + history + stock restore, courier, payment approve/reject, custom email, message read/delete
 - [x] Notifications module: Resend + React Email templates (order placed, admin new order, status, custom); WhatsApp Cloud API stub
-- [ ] Admin orders table (real-time, filters) + order detail page + screenshot viewer
-- [ ] Invoice + packing slip print
-- [ ] WhatsApp buttons with editable templates
-- [ ] Messages inbox UI
-- [ ] Lint + build + commit
+- [x] Admin orders table (real-time, filters) + order detail page + screenshot viewer
+- [x] Invoice + packing slip print
+- [x] WhatsApp buttons with editable templates
+- [x] Messages inbox UI
+- [x] Lint + build + commit
 
 ## Phase 6 — Analytics
-- [ ] Date range filter, stat cards with % change
-- [ ] All Recharts charts
-- [ ] Live recent orders + sound/toast
-- [ ] Low/out-of-stock alerts
-- [ ] CSV/Excel export
+- [x] Date range filter, stat cards with % change
+- [x] All Recharts charts
+- [x] Live recent orders + sound/toast
+- [x] Low/out-of-stock alerts
+- [x] CSV/Excel export
 
 ## Phase 7 — Customers, coupons, reviews, settings, admins, pages, SEO
 - [x] Backend: coupons CRUD, review moderation (+ rating recompute), customer block, settings/pages save, admin users add/remove
 - [x] Customer "write review" (verified purchase enforced on backend)
 - [x] SEO: metadata, OG, sitemap, robots, JSON-LD
-- [ ] Admin UIs: customers, coupons, reviews, settings (all sections), pages editor, admin users
+- [x] Admin UIs: customers, coupons, reviews, settings (all sections), pages editor, admin users
 
 ## Phase 8 — Security, testing, deploy
 - [x] firestore.rules + firestore.indexes.json + firebase.json (deploy with `firebase deploy --only firestore`)
@@ -81,6 +81,13 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 - [ ] Performance pass
 - [ ] GitHub repo + push (gh CLI not found in Git Bash PATH — check PowerShell)
 - [ ] Vercel deploy (frontend + backend projects) + env vars
+
+## Admin panel extras (done)
+- [x] /admin/login (email+password, Google, forgot password), access guard with claim refresh
+- [x] /admin/account: profile edit + change password (re-auth) + reset link for Google accounts
+- [x] Staff permissions hide sidebar sections; admin-only: settings, pages, team, deletes
+- [x] make-admin script: `--password` / `--name` (creates account if missing)
+- [ ] OWNER: make hassanadvani08@gmail.com admin → needs service-account JSON in backend/ + Email/Password provider enabled, then `npm run make-admin -- hassanadvani08@gmail.com admin --password "<password>"`
 
 ## Notes / blockers
 - **Waiting on owner for keys** (see summary in chat / `.env.example` files). UI runs in demo mode until then.

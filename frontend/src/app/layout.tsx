@@ -49,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Skip the intro splash if it was already shown in this browser session */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(sessionStorage.getItem('ah-splash')||location.pathname.startsWith('/admin')){document.documentElement.classList.add('splash-seen')}else{sessionStorage.setItem('ah-splash','1')}}catch(e){}`,
+            __html: `try{if(sessionStorage.getItem('ah-splash')||location.pathname.startsWith('/admin')){document.documentElement.classList.add('splash-seen')}else{sessionStorage.setItem('ah-splash','1')}if(location.pathname.startsWith('/admin')){var t=localStorage.getItem('ah-admin-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}}catch(e){}`,
           }}
         />
       </head>

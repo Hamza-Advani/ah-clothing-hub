@@ -41,6 +41,8 @@ type AuthContextValue = {
   updateProfile: (data: Partial<Pick<UserProfile, "name" | "phone">>) => Promise<void>;
   saveAddresses: (addresses: Address[]) => Promise<void>;
   getIdToken: () => Promise<string | null>;
+  /** Force-refresh the ID token so a newly granted admin/staff role is picked up. */
+  refreshClaims: () => Promise<UserRole>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -273,6 +275,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return (await getFirebase()!.auth.currentUser?.getIdToken()) ?? null;
   }, [demoMode]);
 
+  const refreshClaims = useCallback(async (): Promise<UserRole> => {
+    if (demoMode) return role;
+    const u = getFirebase()!.auth.currentUser;
+    if (!u) return "customer";
+    const t = await u.getIdTokenResult(true);
+    const r = ((t.claims.role as UserRole) ?? "customer") || "customer";
+    setRole(r);
+    return r;
+  }, [demoMode, role]);
+
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
@@ -291,8 +303,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       updateProfile,
       saveAddresses,
       getIdToken,
+      refreshClaims,
     }),
-    [user, profile, role, loading, demoMode, signIn, signUp, signInWithGoogle, signOut, resetPassword, changePassword, updateProfile, saveAddresses, getIdToken],
+    [user, profile, role, loading, demoMode, signIn, signUp, signInWithGoogle, signOut, resetPassword, changePassword, updateProfile, saveAddresses, getIdToken, refreshClaims],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
