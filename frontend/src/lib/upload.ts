@@ -17,13 +17,17 @@ export async function compressImage(file: File, maxSize = 1800, quality = 0.85):
   return blob && blob.size < file.size ? blob : file;
 }
 
-type Signature = { signature: string; timestamp: number; apiKey: string; cloudName: string; folder: string };
+type Signature = { signature: string; timestamp: number; apiKey: string; cloudName: string; folder: string; allowedFormats?: string };
+
+const MAX_BYTES = 15 * 1024 * 1024;
 
 /**
  * Signed upload to Cloudinary. The backend creates the signature (secret stays on server),
  * the browser uploads directly to Cloudinary with progress events.
  */
 export async function uploadImage(file: File, folder: "products" | "categories" | "banners" | "branding" | "payments", onProgress?: (pct: number) => void): Promise<{ url: string; publicId: string }> {
+  if (!file.type.startsWith("image/")) throw new Error("Only image files can be uploaded.");
+  if (file.size > MAX_BYTES) throw new Error("Image is larger than 15 MB.");
   const blob = await compressImage(file);
   if (!isApiConfigured) {
     // demo mode: keep a local preview URL so the UI flow works without keys
@@ -37,6 +41,7 @@ export async function uploadImage(file: File, folder: "products" | "categories" 
   form.append("timestamp", String(sig.timestamp));
   form.append("signature", sig.signature);
   form.append("folder", sig.folder);
+  if (sig.allowedFormats) form.append("allowed_formats", sig.allowedFormats);
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();

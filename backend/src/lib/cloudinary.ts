@@ -13,8 +13,10 @@ export function signUpload(folder: string) {
   const c = getCloudinary();
   const timestamp = Math.round(Date.now() / 1000);
   const fullFolder = `ah-clothing-hub/${folder}`;
-  const signature = c.utils.api_sign_request({ timestamp, folder: fullFolder }, env.CLOUDINARY_API_SECRET!);
-  return { signature, timestamp, folder: fullFolder, apiKey: env.CLOUDINARY_API_KEY!, cloudName: env.CLOUDINARY_CLOUD_NAME! };
+  // allowed_formats is part of the signature, so the browser cannot upload anything but images
+  const allowedFormats = "jpg,jpeg,png,webp,gif,heic,avif";
+  const signature = c.utils.api_sign_request({ timestamp, folder: fullFolder, allowed_formats: allowedFormats }, env.CLOUDINARY_API_SECRET!);
+  return { signature, timestamp, folder: fullFolder, allowedFormats, apiKey: env.CLOUDINARY_API_KEY!, cloudName: env.CLOUDINARY_CLOUD_NAME! };
 }
 
 export async function destroyImage(publicId: string) {

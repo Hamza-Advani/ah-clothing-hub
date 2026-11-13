@@ -56,6 +56,22 @@ export const notify = {
     const subject = tpl?.subject?.replace("{orderNumber}", order.orderNumber) ?? `Order ${order.orderNumber}: ${status}`;
     await sendEmail(order.customer.email, subject, createElement(StatusEmail, { order, status, brand: b, customText: tpl?.body }), b.email).catch((e) => console.error(e));
   },
+  /** New contact-form message → admin inbox email (reply goes straight to the customer). */
+  async contactMessage(m: { name: string; email: string; phone?: string; subject: string; message: string }) {
+    if (!env.ADMIN_NOTIFY_EMAIL) return;
+    const b = await brand();
+    const body = `New message from your website contact form.
+
+Name: ${m.name}
+Email: ${m.email}
+Phone: ${m.phone || "—"}
+Subject: ${m.subject}
+
+${m.message}
+
+Reply to this email to answer the customer, or open Admin → Messages.`;
+    await sendEmail(env.ADMIN_NOTIFY_EMAIL, `📩 Contact form: ${m.subject}`, createElement(CustomEmail, { name: "Admin", subject: m.subject, message: body, brand: b }), m.email);
+  },
   async custom(to: string, name: string, subject: string, message: string) {
     const b = await brand();
     return sendEmail(to, subject, createElement(CustomEmail, { name, subject, message, brand: b }), b.email);

@@ -23,7 +23,7 @@ adminRouter.patch(
       if (!cur?.courier) throw new HttpError(400, "Add courier name and tracking number before marking as shipped.");
     }
     const o = await updateOrderStatus(String(req.params.id), v.status, req.user!.uid, { note: v.note, courier: v.courier });
-    if (v.notify && o.previous !== v.status) notify.statusChanged(o as never, v.status).catch(console.error);
+    if (v.notify && o.previous !== v.status) await notify.statusChanged(o as never, v.status).catch(console.error);
     res.json({ ok: true });
   }),
 );
@@ -48,7 +48,7 @@ adminRouter.patch(
     await ref.update({ "payment.status": decision === "approve" ? "paid" : "rejected", "payment.reviewedBy": req.user!.uid, "payment.note": note ?? "", updatedAt: FieldValue.serverTimestamp() });
     if (decision === "approve" && o.status === "pending") {
       const updated = await updateOrderStatus(String(req.params.id), "confirmed", req.user!.uid, { note: "Payment approved" });
-      notify.statusChanged(updated as never, "confirmed").catch(console.error);
+      await notify.statusChanged(updated as never, "confirmed").catch(console.error);
     }
     res.json({ ok: true });
   }),
@@ -95,11 +95,15 @@ async function saveProduct(pid: string | null, body: unknown) {
   const dupe = await firestore.collection("products").where("slug", "==", p.slug).limit(2).get();
   if (dupe.docs.some((d) => d.id !== pid)) throw new HttpError(409, "Another product already uses this URL slug.");
   const ref = pid ? firestore.doc(`products/${pid}`) : firestore.collection("products").doc();
+  const before = pid ? ((await ref.get()).data()?.images ?? []) as { publicId?: string }[] : [];
   const totalStock = p.variants.reduce((a, v) => a + v.stock, 0);
   const batch = firestore.batch();
   batch.set(ref, { ...p, totalStock, updatedAt: FieldValue.serverTimestamp(), ...(pid ? {} : { createdAt: FieldValue.serverTimestamp(), rating: 0, reviewCount: 0, soldCount: 0 }) }, { merge: true });
   batch.set(firestore.doc(`productsPrivate/${ref.id}`), { costPrice, updatedAt: FieldValue.serverTimestamp() }, { merge: true });
   await batch.commit();
+  // photos removed in the form are deleted from Cloudinary too
+  const keep = new Set(p.images.map((i) => i.publicId).filter(Boolean));
+  await Promise.all(before.filter((i) => i.publicId && !keep.has(i.publicId)).map((i) => destroyImage(i.publicId!)));
   return ref.id;
 }
 
@@ -149,7 +153,14 @@ const categorySchema = z.object({ name: z.string().trim().min(2).max(80), slug: 
 const couponSchema = z.object({ code: z.string().trim().toUpperCase().regex(/^[A-Z0-9_-]{3,30}$/), type: z.enum(["percent", "fixed"]), value: z.number().positive(), minOrder: z.number().min(0).default(0), maxDiscount: z.number().positive().nullable().default(null), expiresAt: z.number().nullable().default(null), usageLimit: z.number().int().positive().nullable().default(null), active: z.boolean().default(true) }).refine((c) => c.type !== "percent" || c.value <= 90, { path: ["value"], message: "Max 90%" });
 
 adminRouter.post("/categories", ah(async (req, res) => res.status(201).json({ id: (await db().collection("categories").add({ ...parse(categorySchema, req.body), createdAt: FieldValue.serverTimestamp() })).id })));
-adminRouter.put("/categories/:id", ah(async (req, res) => { await db().doc(`categories/${req.params.id}`).set(parse(categorySchema, req.body), { merge: true }); res.json({ ok: true }); }));
+adminRouter.put("/categories/:id", ah(async (req, res) => {
+  const v = parse(categorySchema, req.body);
+  const ref = db().doc(`categories/${req.params.id}`);
+  const oldId = (await ref.get()).data()?.image?.publicId as string | undefined;
+  await ref.set(v, { merge: true });
+  if (oldId && oldId !== v.image.publicId) await destroyImage(oldId); // replaced image → remove the old file
+  res.json({ ok: true });
+}));
 adminRouter.delete("/categories/:id", requireAdmin, ah(async (req, res) => {
   const inUse = await db().collection("products").where("categoryId", "==", req.params.id).limit(1).get();
   if (!inUse.empty) throw new HttpError(409, "Move or delete the products in this category first.");

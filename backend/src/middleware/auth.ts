@@ -1,6 +1,9 @@
 import type { NextFunction, Request, Response } from "express";
 import { adminAuth } from "../lib/firebase.js";
 import { HttpError } from "../lib/http.js";
+import { env } from "../lib/env.js";
+
+const adminAllow = (env.ADMIN_EMAILS ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
 
 export type Role = "customer" | "staff" | "admin";
 export type AuthedUser = { uid: string; email?: string; name?: string; role: Role };
@@ -16,7 +19,10 @@ async function decode(req: Request): Promise<AuthedUser | undefined> {
   if (!h?.startsWith("Bearer ")) return undefined;
   try {
     const t = await adminAuth().verifyIdToken(h.slice(7), true);
-    return { uid: t.uid, email: t.email, name: t.name as string | undefined, role: (t.role as Role) ?? "customer" };
+    let role: Role = (t.role as Role) ?? "customer";
+    // privileged roles also require a verified email on the allow-list (when configured)
+    if (role !== "customer" && adminAllow.length && !(t.email_verified && t.email && adminAllow.includes(t.email.toLowerCase()))) role = "customer";
+    return { uid: t.uid, email: t.email, name: t.name as string | undefined, role };
   } catch (e) {
     if (e instanceof HttpError) throw e;
     throw new HttpError(401, "Your session has expired. Please log in again.");

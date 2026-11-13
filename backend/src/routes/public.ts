@@ -39,8 +39,8 @@ publicRouter.post(
       if (u.data()?.blocked) throw new HttpError(403, "Your account is restricted. Please contact support.");
     }
     const order = await createOrder({ ...input, couponCode: input.couponCode ?? null, payment: { method: input.payment.method, txnId: input.payment.txnId ?? null, screenshot: input.payment.screenshot ?? null } }, req.user?.uid ?? null);
-    // fire-and-forget emails so checkout stays fast
-    notify
+    // awaited: on serverless (Vercel) work after the response may be frozen and emails lost
+    await notify
       .orderPlaced({ orderNumber: order.orderNumber, customer: input.customer, shipping: input.shipping, items: order.items, subtotal: order.subtotal, discount: order.discount, deliveryCharge: order.deliveryCharge, total: order.total, payment: { method: input.payment.method, status: order.paymentStatus } })
       .catch((e) => console.error("order email failed", e));
     res.status(201).json({ orderId: order.orderId, orderNumber: order.orderNumber, total: order.total });
@@ -64,6 +64,7 @@ publicRouter.post(
   ah(async (req, res) => {
     const v = parse(z.object({ name: str(2, 80), email: z.string().email(), phone: z.string().max(20).optional(), subject: str(3, 120), message: str(10, 2000) }), req.body);
     await db().collection("messages").add({ ...v, read: false, repliedAt: null, createdAt: FieldValue.serverTimestamp() });
+    await notify.contactMessage(v).catch((e) => console.error("contact email failed", e));
     res.status(201).json({ ok: true });
   }),
 );

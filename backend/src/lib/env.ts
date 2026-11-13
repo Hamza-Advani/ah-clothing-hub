@@ -18,6 +18,8 @@ const schema = z.object({
   RESEND_API_KEY: z.string().optional(),
   EMAIL_FROM: z.string().default("AH Clothing Hub <onboarding@resend.dev>"),
   ADMIN_NOTIFY_EMAIL: z.string().optional(),
+  /** Comma-separated allow-list: only these emails may use admin/staff roles (defence in depth on top of custom claims). */
+  ADMIN_EMAILS: z.string().optional(),
 });
 
 export const env = schema.parse(process.env);

@@ -4,6 +4,7 @@
  * and registering them in PROVIDERS — the order flow does not need to change.
  */
 import { HttpError } from "../lib/http.js";
+import { env } from "../lib/env.js";
 import type { PaymentMethod, PaymentStatus, StoreSettings } from "../lib/types.js";
 
 export type PaymentInput = { method: PaymentMethod; txnId: string | null; screenshot: { url: string; publicId: string } | null };
@@ -31,7 +32,12 @@ function manualWallet(id: "jazzcash" | "easypaisa", label: string): PaymentProvi
     label,
     isEnabled: (s) => s.payments[id].enabled,
     init: async (input) => {
-      if (!input.screenshot?.url?.startsWith("https://res.cloudinary.com/")) throw new HttpError(400, "Please upload a valid payment screenshot.");
+      // must be an image uploaded to OUR Cloudinary account, in the payments folder (never trust arbitrary URLs)
+      const ok =
+        !!input.screenshot &&
+        input.screenshot.url.startsWith(`https://res.cloudinary.com/${env.CLOUDINARY_CLOUD_NAME}/image/upload/`) &&
+        input.screenshot.publicId.startsWith("ah-clothing-hub/payments/");
+      if (!ok) throw new HttpError(400, "Please upload a valid payment screenshot.");
       return { status: "awaiting_approval" };
     },
   };
