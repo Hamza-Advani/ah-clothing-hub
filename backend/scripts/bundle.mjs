@@ -10,7 +10,8 @@ await build({
   format: "esm",
   target: "node20",
   // Google Cloud libs load .proto/.json files from disk at runtime — keep them as normal node_modules.
-  external: ["@google-cloud/*", "google-gax", "@grpc/*", "protobufjs"],
+  // React Email breaks when bundled (lazy-init order) — load it from node_modules instead.
+  external: ["@google-cloud/*", "google-gax", "@grpc/*", "protobufjs", "@react-email/*", "react", "react-dom"],
   banner: {
     js: [
       'import { createRequire as __cr } from "node:module";',
