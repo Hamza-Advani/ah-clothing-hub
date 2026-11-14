@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { PageHeader } from "@/components/ui/misc";
 import { ContactForm } from "@/components/store/contact-form";
 import { getSettings } from "@/lib/catalog";
 import { whatsappLink } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Contact Us", description: "Get in touch with AH Clothing Hub via WhatsApp, phone or email." };
+export const metadata: Metadata = pageMetadata({
+  title: "Contact Us",
+  description: "Contact AH Clothing Hub on WhatsApp, phone or email for help with sizing, orders, delivery and exchanges, or send us a message using the contact form.",
+  path: "/contact",
+});
 
 export default async function ContactPage() {
   const s = await getSettings();

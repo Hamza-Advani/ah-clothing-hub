@@ -19,8 +19,25 @@ const PRICE_BANDS: [string, number | undefined, number | undefined][] = [
   ["Above Rs. 15,000", 15000, undefined],
 ];
 
-export function ShopView({ products, categories, fixedCategory }: { products: Product[]; categories: Category[]; fixedCategory?: string }) {
-  const sp = useSearchParams();
+type ShopViewProps = { products: Product[]; categories: Category[]; fixedCategory?: string };
+type Params = Pick<URLSearchParams, "get" | "toString">;
+const NO_PARAMS: Params = new URLSearchParams();
+
+/** Interactive shop grid driven by URL params (?size=, ?sort=, ?q= …). */
+export function ShopView(props: ShopViewProps) {
+  return <ShopViewInner {...props} sp={useSearchParams()} />;
+}
+
+/**
+ * Suspense fallback = the same view with no filters applied. It renders on the server, so the HTML
+ * that search engines receive already contains the real product grid and product links (not a skeleton),
+ * and it matches the default client view exactly (no layout shift on hydration).
+ */
+export function ShopFallback(props: ShopViewProps) {
+  return <ShopViewInner {...props} sp={NO_PARAMS} />;
+}
+
+function ShopViewInner({ products, categories, fixedCategory, sp }: ShopViewProps & { sp: Params }) {
   const router = useRouter();
   const pathname = usePathname();
   const [, startTransition] = useTransition();

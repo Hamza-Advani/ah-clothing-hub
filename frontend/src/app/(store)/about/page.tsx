@@ -2,13 +2,18 @@ import { BRAND_IMAGES } from "@/lib/defaults";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Gem, HandHeart, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Prose } from "@/components/ui/misc";
 import { Reveal } from "@/components/store/reveal";
 import { getPages, getSettings } from "@/lib/catalog";
 
-export const metadata: Metadata = { title: "About Us", description: "The story behind AH Clothing Hub — heritage craft meets modern design, made in Pakistan." };
+export const metadata: Metadata = pageMetadata({
+  title: "About Us",
+  description: "Meet AH Clothing Hub — an online clothing store in Pakistan bringing classic style and modern design together in eastern and western wear for women, men and kids.",
+  path: "/about",
+});
 
 export default async function AboutPage() {
   const [pages, settings] = await Promise.all([getPages(), getSettings()]);

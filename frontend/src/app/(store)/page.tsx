@@ -6,6 +6,16 @@ import { getCategories, getProducts, getSettings } from "@/lib/catalog";
 import { discountPercent } from "@/lib/utils";
 import { BRAND_IMAGES } from "@/lib/defaults";
 import Link from "next/link";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "AH Clothing Hub | AH Clothing — Online Clothing Store in Pakistan",
+  absoluteTitle: true,
+  description:
+    "AH Clothing Hub (AH Clothing) — Pakistan's online clothing store for women, men and kids. Shop eastern and western wear with Cash on Delivery across Pakistan.",
+  path: "/",
+});
 
 export default async function HomePage() {
   const [settings, categories, newArrivals, bestSellers, sale, featured] = await Promise.all([

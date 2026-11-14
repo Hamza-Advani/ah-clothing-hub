@@ -18,7 +18,7 @@ import { SIZE_GUIDE } from "@/lib/constants";
 import { cn, formatPKR } from "@/lib/utils";
 import type { Product } from "@/lib/types";
 
-export function ProductInfo({ product, freeDeliveryThreshold, deliveryCharge }: { product: Product; freeDeliveryThreshold: number; deliveryCharge: number }) {
+export function ProductInfo({ product, categoryName, freeDeliveryThreshold, deliveryCharge }: { product: Product; categoryName?: string; freeDeliveryThreshold: number; deliveryCharge: number }) {
   const router = useRouter();
   const mounted = useMounted();
   const [color, setColor] = useState(product.colors[0]?.name ?? "");
@@ -63,7 +63,7 @@ export function ProductInfo({ product, freeDeliveryThreshold, deliveryCharge }: 
   return (
     <div className="md:sticky md:top-28">
       <nav aria-label="Breadcrumb" className="mb-4 hidden text-xs text-muted-foreground md:block">
-        <Link href="/" className="hover:text-foreground">Home</Link> / <Link href={`/category/${product.categorySlug}`} className="capitalize hover:text-foreground">{product.categorySlug.replace(/-/g, " ")}</Link>
+        <Link href="/" className="hover:text-foreground">Home</Link> / <Link href={`/category/${product.categorySlug}`} className="capitalize hover:text-foreground">{categoryName ?? product.categorySlug.replace(/-/g, " ")}</Link>
       </nav>
       <div className="flex flex-wrap gap-1.5">
         {product.newArrival && <Badge variant="new">New in</Badge>}

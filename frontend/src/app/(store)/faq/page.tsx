@@ -1,11 +1,16 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Accordion, AccordionItem } from "@/components/ui/radix";
 import { PageHeader } from "@/components/ui/misc";
 import { Button } from "@/components/ui/button";
 import { getPages } from "@/lib/catalog";
 
-export const metadata: Metadata = { title: "FAQ", description: "Answers to common questions about delivery, payments, exchanges and orders at AH Clothing Hub." };
+export const metadata: Metadata = pageMetadata({
+  title: "FAQ — Delivery, Payments & Orders",
+  description: "Answers to common questions about Cash on Delivery, payments, order tracking, delivery and exchanges at AH Clothing Hub.",
+  path: "/faq",
+});
 
 export default async function FaqPage() {
   const { faq } = await getPages();

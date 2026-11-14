@@ -1,4 +1,7 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Page not found" }; // Next.js adds noindex to 404 responses automatically
 import { Logo } from "@/components/store/logo";
 import { Button } from "@/components/ui/button";
 

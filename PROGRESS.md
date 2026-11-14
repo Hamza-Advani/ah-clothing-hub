@@ -94,6 +94,7 @@ Legend: [x] done · [ ] todo · [~] partly done (see note)
 - [x] Test data deleted on owner approval (Test Category, TEST product + image, orders AH-260001/AH-260002, 3 test messages, test customer). Keys/env untouched; integrations re-verified (health: firebase/cloudinary/resend true). Note: order counter continues from AH-260003.
 - [ ] OWNER: change temporary admin password + rotate Cloudinary secret / Resend key (shared in chat)
 - [x] Demo data removed (catalogue only from Firestore); brand SEO (metadata, JSON-LD WebSite+ClothingStore, manifest, sitemap)
+- [x] SEO pass (2026-11-14): per-page canonical/OG/Twitter via `lib/seo.ts` (fixed every page canonicalising to home), crawlable shop/category grids (server-rendered fallback), noindex on auth/cart/checkout/account/wishlist/order-success, robots only blocks /admin + /api, sitemap lastmod, Product+Breadcrumb+OnlineStore JSON-LD from real settings, API X-Robots-Tag noindex
 - [ ] OWNER: Google Search Console — verify site (NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION) + submit sitemap
 
 ## Admin panel extras (done)

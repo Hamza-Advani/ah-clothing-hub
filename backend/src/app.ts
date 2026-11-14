@@ -12,6 +12,11 @@ export const app = express();
 app.set("trust proxy", 1);
 app.disable("x-powered-by");
 app.use(helmet());
+// The API is not a website — keep every response out of search engines.
+app.use((_req, res, next) => {
+  res.setHeader("X-Robots-Tag", "noindex, nofollow");
+  next();
+});
 const origins = env.CORS_ORIGIN.split(",").map((s) => s.trim());
 app.use(cors({ origin: (origin, cb) => cb(null, !origin || origins.includes(origin)), credentials: false }));
 app.use(express.json({ limit: "500kb" }));

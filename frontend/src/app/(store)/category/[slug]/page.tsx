@@ -3,8 +3,9 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ShopSkeleton, ShopView } from "@/components/store/shop-view";
+import { ShopFallback, ShopView } from "@/components/store/shop-view";
 import { getAllProducts, getCategories, getCategoryBySlug } from "@/lib/catalog";
+import { breadcrumbJsonLd, jsonLd, pageMetadata, plainText } from "@/lib/seo";
 
 export async function generateStaticParams() {
   return (await getCategories()).map((c) => ({ slug: c.slug }));
@@ -12,8 +13,14 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const c = await getCategoryBySlug((await params).slug);
-  if (!c) return {};
-  return { title: c.name, description: `${c.description}. Shop ${c.name} at AH Clothing Hub with Cash on Delivery across Pakistan.`, openGraph: { images: [c.image.url] } };
+  if (!c) return { title: "Category not found", robots: { index: false } };
+  const intro = c.description ? `${plainText(c.description, 110).replace(/[.…\s]+$/, "")}. ` : "";
+  return pageMetadata({
+    title: `${c.name} — Shop Online in Pakistan`,
+    description: `${intro}Shop ${c.name} online at AH Clothing Hub with Cash on Delivery across Pakistan.`,
+    path: `/category/${c.slug}`,
+    images: c.image?.url ? [{ url: c.image.url, alt: c.name }] : undefined,
+  });
 }
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -22,6 +29,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   if (!category) notFound();
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(breadcrumbJsonLd([["Home", "/"], ["Shop", "/shop"], [category.name, `/category/${category.slug}`]]))} />
       <header className="relative overflow-hidden bg-[#141414] text-white">
         <Image src={category.image.url} alt="" fill priority sizes="100vw" className="object-cover object-[center_30%] opacity-55" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/10" />
@@ -40,7 +48,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           </Link>
         ))}
       </nav>
-      <Suspense fallback={<ShopSkeleton />}>
+      <Suspense fallback={<ShopFallback products={products} categories={categories} fixedCategory={slug} />}>
         <ShopView products={products} categories={categories} fixedCategory={slug} />
       </Suspense>
     </>
