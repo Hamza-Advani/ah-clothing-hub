@@ -241,6 +241,10 @@ function BannerEditor({ b, index, last, onChange, onRemove, onMove }: { b: HeroB
     <div className="grid gap-4 rounded-xl border border-border p-4 lg:grid-cols-[300px_minmax(0,1fr)]">
       <div>
         <SingleImage value={b.image ? { url: b.image, publicId: "" } : null} onChange={(v) => onChange({ ...b, image: v?.url ?? "" })} folder="banners" aspect="aspect-[2/1]" label="Upload banner image" />
+        <div className="mt-3 grid grid-cols-[96px_minmax(0,1fr)] items-start gap-3">
+          <SingleImage value={b.mobileImage ? { url: b.mobileImage, publicId: "" } : null} onChange={(v) => onChange({ ...b, mobileImage: v?.url ?? "" })} folder="banners" aspect="aspect-[3/4]" label="Mobile" />
+          <p className="text-xs leading-5 text-muted-foreground">Optional mobile photo (tall / portrait). If empty, the main image is used on phones too.</p>
+        </div>
         <div className="mt-2 flex items-center gap-1">
           <span className="mr-auto text-xs font-semibold text-muted-foreground">Slide {index + 1}</span>
           <AButton size="icon-sm" variant="ghost" aria-label="Move up" disabled={index === 0} onClick={() => onMove(-1)}><ArrowUp /></AButton>
@@ -254,6 +258,12 @@ function BannerEditor({ b, index, last, onChange, onRemove, onMove }: { b: HeroB
         <AField label="Subtitle" className="sm:col-span-2"><ATextarea value={b.subtitle} onChange={(e) => onChange({ ...b, subtitle: e.target.value })} className="min-h-14" /></AField>
         <AField label="Button text"><AInput value={b.ctaLabel} onChange={(e) => onChange({ ...b, ctaLabel: e.target.value })} /></AField>
         <AField label="Button link" hint="e.g. /shop or /category/men"><AInput value={b.ctaLink} onChange={(e) => onChange({ ...b, ctaLink: e.target.value })} /></AField>
+        <AField label="Text style" hint="Use “Dark text” for bright / white-background photos" className="sm:col-span-2">
+          <ASelect value={b.tone ?? "dark"} onChange={(e) => onChange({ ...b, tone: e.target.value as "dark" | "light" })}>
+            <option value="dark">White text (dark photo)</option>
+            <option value="light">Dark text (bright photo)</option>
+          </ASelect>
+        </AField>
       </div>
     </div>
   );

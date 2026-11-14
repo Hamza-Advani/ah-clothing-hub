@@ -160,6 +160,8 @@ export type HeroBanner = {
   id: string;
   image: string;
   mobileImage?: string;
+  /** "light" = bright photo: dark text + ivory fade on desktop. Default "dark". */
+  tone?: "dark" | "light";
   eyebrow?: string;
   title: string;
   subtitle: string;

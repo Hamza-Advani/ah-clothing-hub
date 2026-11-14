@@ -37,7 +37,7 @@ export function Header({ categories, logoUrl, whatsapp }: { categories: Category
 
   const nav = [
     { label: "New In", href: "/shop?filter=new" },
-    ...categories.slice(0, 3).map((c) => ({ label: c.name.replace(/^Women\s+/i, ""), href: `/category/${c.slug}` })),
+    ...categories.slice(0, 3).map((c) => ({ label: c.name, href: `/category/${c.slug}` })),
     { label: "Sale", href: "/shop?filter=sale", accent: true },
   ];
 
