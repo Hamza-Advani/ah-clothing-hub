@@ -235,17 +235,3 @@ function PriceInputs({ min, max, onApply }: { min?: number; max?: number; onAppl
     </form>
   );
 }
-
-export function ShopSkeleton() {
-  return (
-    <div className="container-x grid grid-cols-2 gap-x-3 gap-y-10 py-12 md:grid-cols-3 lg:grid-cols-4">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i}>
-          <div className="skeleton aspect-[3/4] rounded-[6px]" />
-          <div className="skeleton mt-4 h-3 w-1/3" />
-          <div className="skeleton mt-2 h-4 w-3/4" />
-        </div>
-      ))}
-    </div>
-  );
-}

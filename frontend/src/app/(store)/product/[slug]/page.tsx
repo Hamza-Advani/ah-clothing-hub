@@ -7,7 +7,7 @@ import { ProductRail } from "@/components/store/product-rail";
 import { RecentlyViewed } from "@/components/store/recently-viewed";
 import { SectionHeading } from "@/components/ui/misc";
 import { getAllProducts, getCategoryBySlug, getProductBySlug, getProductReviews, getRelatedProducts, getSettings } from "@/lib/catalog";
-import { absoluteUrl, breadcrumbJsonLd, jsonLd, pageMetadata, plainText } from "@/lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, jsonLd, ORG_ID, pageMetadata, plainText } from "@/lib/seo";
 import { formatPKR } from "@/lib/utils";
 
 export async function generateStaticParams() {
@@ -74,7 +74,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       price: unitPrice,
       itemCondition: "https://schema.org/NewCondition",
       availability: product.totalStock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      seller: { "@id": `${absoluteUrl("/")}/#organization` },
+      seller: { "@id": ORG_ID },
       shippingDetails: {
         "@type": "OfferShippingDetails",
         shippingRate: { "@type": "MonetaryAmount", value: shippingRate, currency: "PKR" },

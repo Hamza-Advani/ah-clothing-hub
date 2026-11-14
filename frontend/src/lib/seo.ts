@@ -4,8 +4,10 @@
  */
 import type { Metadata } from "next";
 
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/+$/, "");
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").trim().replace(/\/+$/, "");
 export const SITE_NAME = "AH Clothing Hub";
+/** Shared JSON-LD id so products can reference the store as their seller. */
+export const ORG_ID = `${SITE_URL}/#organization`;
 
 export const absoluteUrl = (path = "/") => (path.startsWith("http") ? path : `${SITE_URL}${path === "/" ? "" : path}`);
 

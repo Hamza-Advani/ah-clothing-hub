@@ -6,13 +6,12 @@ import { SearchOverlay } from "@/components/store/search-overlay";
 import { WhatsAppButton } from "@/components/store/whatsapp-button";
 import { StoreDataProvider } from "@/components/providers/store-data";
 import { getAllProducts, getCategories, getSettings } from "@/lib/catalog";
-import { absoluteUrl, jsonLd, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { absoluteUrl, jsonLd, ORG_ID, SITE_NAME, SITE_URL } from "@/lib/seo";
 import type { StoreSettings } from "@/lib/types";
 
 /** Brand structured data built only from the owner's own Admin → Settings values (nothing invented). */
 function brandJsonLd(s: StoreSettings) {
   const sameAs = Object.values(s.socials ?? {}).filter((u): u is string => typeof u === "string" && /^https?:\/\//.test(u));
-  const orgId = `${SITE_URL}/#organization`;
   return [
     {
       "@context": "https://schema.org",
@@ -22,12 +21,12 @@ function brandJsonLd(s: StoreSettings) {
       alternateName: ["AH Clothing", "AH Clothing Hub Pakistan"],
       url: SITE_URL,
       inLanguage: "en-PK",
-      publisher: { "@id": orgId },
+      publisher: { "@id": ORG_ID },
     },
     {
       "@context": "https://schema.org",
       "@type": "OnlineStore",
-      "@id": orgId,
+      "@id": ORG_ID,
       name: s.storeName || SITE_NAME,
       alternateName: "AH Clothing",
       url: SITE_URL,

@@ -20,11 +20,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority,
   });
 
-  return [
+  const entries = [
     page("/", 1, catalogUpdated),
     page("/shop", 0.9, catalogUpdated),
     ...categories.map((c) => page(`/category/${c.slug}`, 0.8, lastModFor(c.slug))),
     ...products.map((p) => page(`/product/${p.slug}`, 0.7, stamp(p) ? new Date(stamp(p)) : undefined)),
     ...["/about", "/contact", "/faq", "/returns", "/privacy", "/terms"].map((p) => page(p, 0.4)),
   ];
+  // Guard against duplicate URLs (e.g. two products saved with the same slug).
+  const seen = new Set<string>();
+  return entries.filter((e) => !seen.has(e.url) && seen.add(e.url));
 }
